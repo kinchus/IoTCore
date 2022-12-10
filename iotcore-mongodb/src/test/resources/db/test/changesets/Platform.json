@@ -1,0 +1,10 @@
+[ 
+	{
+	    "name" : "IoTCloud",
+	    "description" : "Sample configuration",
+	    "softwareVersion" : "1.0.0-PRE",
+	    "initialized" : false,
+	    "rootHolderID" : "000000000000000000000000",
+	    "deviceTypes" : ["OpticalReader", "Pulsemeter"]
+	}
+]

@@ -1,0 +1,42 @@
+[ 
+	{
+		"id":"0000000000000000000000d1", 
+		"className" : "com.iotcore.domain.model.device.Device",
+		"name":"TestDevice1", 
+		"devEUI":"010203040506070809",
+		"applicationSubscription" : {
+			"id":"000000000000000000000001", 
+			"className" : "com.iotcore.domain.model.application.ApplicationSubscription"
+		}
+	}, 
+	{
+		"id":"0000000000000000000000d2", 
+		"className" : "com.iotcore.domain.model.device.Device",
+		"name":"TestDevice2", 
+		"devEUI":"010203040506070819"
+		}, 
+	{
+		"id":"0000000000000000000000d3", 
+		"className" : "com.iotcore.domain.model.device.Device",
+		"name":"TestDevice3", 
+		"devEUI":"010203040506070829"
+		}, 
+	{
+		"id":"0000000000000000000000d4", 
+		"className" : "com.iotcore.domain.model.device.Device",
+		"name":"TestDevice4", 
+		"devEUI":"010203040506070839"
+		}, 
+	{
+		"id":"0000000000000000000000d5", 
+		"className" : "com.iotcore.domain.model.device.Device",
+		"name":"TestDevice5",
+		"devEUI":"010203040506070849"
+		}, 
+	{
+		"id":"0000000000000000000000d6", 
+		"className" : "com.iotcore.domain.model.device.Device",
+		"name":"TestDevice6",
+		"devEUI":"010203040506070859"
+		}
+]

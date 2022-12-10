@@ -1,0 +1,40 @@
+[ 
+	{
+		"id":"000000000000000000000001",
+		"username":"admin",
+		"email":"garciadjx@gmail.com",
+		"firstName" : "admin",
+	    "middleName" : "admin",
+	    "lastName" : "admin",
+	    "address" : "none",
+	    "city" : "unknown",
+	    "accountId" : "000000000000000000000001",
+	    "enabled" : true,
+	    "profile" : {
+            "language" : "EN",
+            "country" : "UK",
+            "preferredApplication" : ""
+	     },
+	     "roles" : [ 
+	     	"ADMINISTRATOR"
+	     ]
+	}, 
+	{
+		"id":"000000000000000000000002", 
+		"username":"testuser", 
+		"email":"garciadjx@gmail.com",
+		"firstName" : "test",
+	    "middleName" : "test",
+	    "lastName" : "test",
+	    "accountId" : "000000000000000000000001",
+	    "enabled" : true,
+	    "profile" : {
+            "language" : "EN",
+            "country" : "UK",
+            "preferredApplication" : "OpticalReader"
+	     },
+	     "roles" : [ 
+	     	"ADMINISTRATOR"
+	     ]
+	}
+]

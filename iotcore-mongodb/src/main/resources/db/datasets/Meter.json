@@ -1,0 +1,30 @@
+[ 
+	{
+	    "id" : "000000000000000000000001",
+	    "className" : "com.iotcore.domain.model.meter.Meter",
+	    "name" : "TestMeter1",
+	    "serial" : "1",
+		"holderId" : "0",
+		"clientId" : "0000000001",
+		"profile" : {
+			"$ref" : "MeterProfile",
+	        "id" : "000000000000000000000001"
+		},
+		"enabled" : true,
+		"registeredOn" : "2021-01-01T00:00:00.000Z"
+	},
+	{
+	    "id" : "000000000000000000000002",
+	    "className" : "com.iotcore.domain.model.meter.Meter",
+	    "name" : "TestMeter2",
+	    "serial" : "2",
+		"holderId" : "0",
+		"clientId" : "0000000001",
+		"profile" : {
+			"$ref" : "MeterProfile",
+	        "id" : "000000000000000000000001"
+		},
+		"enabled" : true,
+		"registeredOn" : "2021-01-01T00:00:00.000Z"
+	}
+]

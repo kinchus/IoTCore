@@ -1,0 +1,14 @@
+[ 
+	{
+		"id":"000000000000000000000001",
+		"language" : "EN",
+	    "zoneinfo" : "GMT+2",
+	    "preferredApplication" : "OpticalReader"
+	}, 
+	{
+		"id":"000000000000000000000002",
+		"language" : "EN",
+	    "zoneinfo" : "GMT+2",
+	    "preferredApplication" : "OpticalReader"
+	}
+]

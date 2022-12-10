@@ -1,0 +1,72 @@
+[ 
+	{
+		"id":"000000000000000000000001",
+		"name":"TestCustomer1", 
+		"email":"t1@gmail.com",
+		"roles" : [ 
+	        {
+	            "$ref" : "Role",
+	            "id" : "000000000000000000000001"
+	        },
+	        {
+	            "$ref" : "Role",
+	            "id" : "000000000000000000000002"
+	        }
+	    ],
+		"applicationSubscriptions" : [ 
+			{
+				"$ref" : "ApplicationSubscription",
+		        "id" : "000000000000000000000001"
+			},
+			{
+				"$ref" : "ApplicationSubscription",
+		        "id" : "000000000000000000000002"
+			}
+		]
+	}, 
+	{
+		"id":"000000000000000000000002", 
+		"name":"TestCustomer2", 
+		"email":"t2@gmail.com"
+	}, 
+	{
+		"id":"000000000000000000000003", 
+		"name":"TestCustomer3", 
+		"email":"t3@gmail.com"
+	}, 
+	{
+		"id":"000000000000000000000004", 
+		"name":"TestCustomer4", 
+		"email":"t4@gmail.com"
+	}, 
+	{
+		"id":"000000000000000000000005", 
+		"name":"TestCustomer5", 
+		"email":"t5@gmail.com"
+	}, 
+	{
+		"id":"000000000000000000000006", 
+		"name":"TestCustomer6", 
+		"email":"t6@gmail.com"
+	}, 
+	{
+		"id":"000000000000000000000007", 
+		"name":"TestCustomer7", 
+		"email":"t7@gmail.com"
+	}, 
+	{
+		"id":"000000000000000000000008", 
+		"name":"TestCustomer8", 
+		"email":"t8@gmail.com"
+	}, 
+	{
+		"id":"000000000000000000000009", 
+		"name":"TestCustomer9", 
+		"email":"t9@gmail.com"
+	}, 
+	{
+		"id":"000000000000000000000010", 
+		"name":"TestCustomer10", 
+		"email":"t10@gmail.com"
+	}
+]

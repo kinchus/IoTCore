@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.iotcore</groupId>
+	<artifactId>iotcore-parent</artifactId>
+	<version>0.0.1</version>
+	<name>IoTCore Parent</name>
+	<packaging>pom</packaging>
+	<description>IoTCore - Parent Project</description>
+
+	<modules>
+		<module>iotcore</module>
+		<module>iotcore-mongodb</module>
+		<module>iotcore-aws</module>
+	</modules>
+
+	<properties>
+	
+		<java.source.version>11</java.source.version>
+		<java.target.version>11</java.target.version>
+		
+				
+		<!-- JBoss JEE API versions -->
+		<jboss-javaee-7.0.version>1.1.1.Final</jboss-javaee-7.0.version>
+		<jboss-annotations-api.version>1.0.2.Final</jboss-annotations-api.version>
+		<jboss-ejb-api.version>1.0.1.Final</jboss-ejb-api.version>
+		<jboss-json-api.version>1.0.1.Final</jboss-json-api.version>
+		<hibernate-jpa-2.1-api.version>1.0.0.Final</hibernate-jpa-2.1-api.version>
+		
+		<javax.enterprise.version>2.0</javax.enterprise.version>
+		<javax.annotation.version>1.3.2</javax.annotation.version>
+		<javax.servlet.version>4.0.0</javax.servlet.version>
+		<javax.el.version>3.0.0</javax.el.version>
+		<javax.ejb.version>3.0</javax.ejb.version>
+		<javax.persistence.version>2.2</javax.persistence.version>
+
+		<!-- AWS -->
+		<aws-java-sdk.version>2.17.140</aws-java-sdk.version>
+		
+		<!-- MongoDB and Morphia -->
+		<org.mongodb.version>4.4.2</org.mongodb.version>
+		
+		<!-- Jackson dependencies -->
+		<jackson.version>2.12.6</jackson.version>
+		
+		
+		<!-- Logging & Test dependencies versions -->
+		<slf4j.version>2.0.5</slf4j.version>
+		<logback.version>1.4.5</logback.version>
+		<junit.version>5.9.1</junit.version>
+
+		<!-- Maven -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+		<maven.compiler.source>${java.source.version}</maven.compiler.source>
+		<maven.compiler.target>${java.target.version}</maven.compiler.target>
+	
+		<project.repo.url>s3://iotcloud.repository</project.repo.url>
+		
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+
+			<!-- IOTCLOUD -->
+			<dependency>
+				<groupId>com.iotcore</groupId>
+				<artifactId>iotcore</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.iotcore</groupId>
+				<artifactId>iotcore-mongodb</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.iotcore</groupId>
+				<artifactId>iotcore-aws</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<!-- JBoss JEE Dependencies -->
+			<dependency>
+			    <groupId>org.jboss.spec</groupId>
+			    <artifactId>jboss-javaee-7.0</artifactId>
+			    <version>${jboss-javaee-7.0.version}</version>
+			    <type>pom</type>
+			    <scope>import</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.jboss.spec.javax.annotation</groupId>
+				<artifactId>jboss-annotations-api_1.2_spec</artifactId>
+				<version>${jboss-annotations-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.spec.javax.ejb</groupId>
+				<artifactId>jboss-ejb-api_3.2_spec</artifactId>
+				<version>${jboss-ejb-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.spec.javax.json</groupId>
+			    <artifactId>jboss-json-api_1.0_spec</artifactId>
+			    <version>${jboss-json-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate.javax.persistence</groupId>
+				<artifactId>hibernate-jpa-2.1-api</artifactId>
+				<version>${hibernate-jpa-2.1-api.version}</version>  
+			</dependency>
+			
+			<dependency>
+				<groupId>javax.enterprise</groupId>
+			    <artifactId>cdi-api</artifactId>
+			    <version>${javax.enterprise.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.persistence</groupId>
+				<artifactId>javax.persistence-api</artifactId>
+				<version>${javax.persistence.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${javax.servlet.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.el</groupId>
+				<artifactId>javax.el-api</artifactId>
+				<version>${javax.el.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>javax.annotation</groupId>
+			    <artifactId>javax.annotation-api</artifactId>
+			    <version>${javax.annotation.version}</version>
+			</dependency>
+			
+			<!--JACKSON -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson.version}</version>
+	  		</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+		
+			<dependency>
+				<groupId>org.jboss.resteasy</groupId>
+				<artifactId>resteasy-jackson2-provider</artifactId>
+				<version>${resteasy.version}</version>
+			</dependency>
+			
+			<!-- AWS -->
+			<dependency>
+	        	<groupId>software.amazon.awssdk</groupId>
+	        	<artifactId>bom</artifactId>
+	        	<version>${aws-java-sdk.version}</version>
+	        	<type>pom</type>
+	        	<scope>import</scope>
+	        </dependency>
+
+			<!-- MongoDB -->
+			<dependency>
+				<groupId>org.mongodb</groupId>
+				<artifactId>bson</artifactId>
+				<version>${org.mongodb.version}</version>
+	    	</dependency>
+			<dependency>
+		       <groupId>org.mongodb</groupId>
+            	<artifactId>mongodb-driver-legacy</artifactId>
+		        <version>${org.mongodb.version}</version>
+		    </dependency>
+		    <dependency>
+		       <groupId>org.mongodb</groupId>
+            	<artifactId>mongodb-driver-sync</artifactId>
+		        <version>${org.mongodb.version}</version>
+		    </dependency>
+			<dependency>
+				<groupId>dev.morphia.morphia</groupId>
+				<artifactId>morphia-core</artifactId>
+				<version>${morphia-core.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.mongodb</groupId>
+						<artifactId>mongodb-driver-legacy</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.mongodb</groupId>
+						<artifactId>mongodb-driver-sync</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		
+			<!-- LOGGING -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			
+			
+			<!-- TEST -->
+			<dependency>
+			    <groupId>org.junit.jupiter</groupId>
+			    <artifactId>junit-jupiter-api</artifactId>
+			    <version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven-compiler-plugin.version}</version>
+					<configuration>
+						<source>${maven.compiler.source}</source>
+						<target>${maven.compiler.target}</target>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.1.0</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>properties-maven-plugin</artifactId>
+					<version>1.0.0</version>
+					<executions>
+						<execution>
+							<phase>initialize</phase>
+							<goals>
+								<goal>read-project-properties</goal>
+							</goals>
+							<configuration>
+								<files>
+									<file>${project.parent.basedir}/iotcloud.properties</file>
+								</files>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-shade-plugin</artifactId>
+					<version>3.2.2</version>
+					<configuration>
+						<createDependencyReducedPom>false</createDependencyReducedPom>
+						<filters>
+							<filter>
+								<artifact>*:*</artifact>
+								<excludes>
+									<exclude>META-INF/*.SF</exclude>
+									<exclude>META-INF/*.DSA</exclude>
+									<exclude>META-INF/*.RSA</exclude>
+									<exclude>META-INF/NOTICE*</exclude>
+									<exclude>META-INF/LICENSE*</exclude>
+									<exclude>META-INF/DEPENDENCIES</exclude>
+									<exclude>META-INF/MANIFEST.MF</exclude>
+								</excludes>
+							</filter>
+						</filters>
+					</configuration>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>shade</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+
+		<extensions>
+			<extension>
+				<groupId>com.allogy.maven.wagon</groupId>
+				<artifactId>maven-s3-wagon</artifactId>
+				<version>1.2.0</version>
+			</extension>
+		</extensions>
+
+	</build>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>iotcloud-maven-repo</id>
+			<url>s3://iotcloudng-repository/snapshot</url>
+		</snapshotRepository>
+		<repository>
+			<id>iotcloud-maven-repo</id>
+			<url>s3://iotcloudng-repository/release</url>
+		</repository>
+	</distributionManagement>
+	
+	
+</project>

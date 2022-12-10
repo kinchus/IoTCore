@@ -1,0 +1,56 @@
+[ 
+	{
+	    "id" : "000000000000000000000001",
+	    "accountId" : "0",
+	    "name" : "Root Administrator",
+	    "system" : true,
+	    "permissions" : [ 
+        	"*:*"
+    	]
+	},
+	{
+	    "id" : "000000000000000000000002",
+	    "accountId" : "0",
+	    "name" : "Meters Administrator",
+	    "system" : true,
+	    "permissions" : [ 
+        	"meter:*"
+    	]
+	},
+	{
+	    "id" : "000000000000000000000003",
+	    "accountId" : "0",
+	    "name" : "Users Administrator",
+	    "system" : true,
+	    "permissions" : [ 
+        	"user:*"
+    	]
+	},
+	{
+	    "id" : "000000000000000000000004",
+	    "accountId" : "0",
+	    "name" : "Device Administrator",
+	    "system" : true,
+	    "permissions" : [ 
+        	"device:*"
+    	]
+	},
+	{
+	    "id" : "000000000000000000000100",
+	    "accountId" : "0",
+	    "name" : "Administrator",
+	    "system" : true,
+	    "permissions" : [ 
+        	"*:*"
+    	]
+	},
+	{
+	    "id" : "000000000000000000001000",
+	    "accountId" : "0",
+	    "name" : "User",
+	    "system" : true,
+	    "permissions" : [ 
+        	"*:*"
+    	]
+	}
+]

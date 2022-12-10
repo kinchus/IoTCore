@@ -1,0 +1,19 @@
+[ 
+	{
+	    "id" : "000000000000000000000000",
+	    "root" : true,
+	    "name" : "Laiwa",
+	    "displayName" : "Laiwa Communications Ltd.",
+	    "groups" : [ "Administrators", "Users" ], 
+	    "roles" : [ 
+	        {
+	            "$ref" : "Role",
+	            "id" : "000000000000000000000001"
+	        },
+	        {
+	            "$ref" : "Role",
+	            "id" : "000000000000000000000002"
+	        }
+	    ]
+	}
+]

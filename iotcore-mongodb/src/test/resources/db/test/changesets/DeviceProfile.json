@@ -1,0 +1,35 @@
+[	
+	{
+	    "id" : "000000000000000000000001",
+	    "className" : "com.iotcore.infrastructure.lora.model.LoraDeviceProfile",
+	    "networkType" : "LORA",
+	    "name" : "LORA Class A",
+    	"description" : "Device profile for class A LoRa networks",
+	    "system" : true,
+	    "parametersMap" : {
+	    		"MacVersion" : "1.1.0"
+	    }
+	},
+	{
+	    "id" : "000000000000000000000002",
+	    "className" : "com.iotcore.infrastructure.lora.model.LoraDeviceProfile",
+	    "networkType" : "LORA",
+	    "name" : "LORA Class B",
+    	"description" : "Device profile for class A LoRa networks",
+	    "system" : true,
+	    "parametersMap" : {
+	    		"MacVersion" : "1.1.0"
+	    }
+	},
+	{
+	    "id" : "000000000000000000000003",
+	    "className" : "com.iotcore.domain.model.deprecated.devprofile.UdpDeviceProfile",
+	    "networkType" : "UDP",
+	    "name" : "NB-IoT default",
+    	"description" : "Default profile for NB-IoT networking",
+	    "system" : true,
+	    "parametersMap" : {
+	    		"MacVersion" : "1.1.0"
+	    }
+	}
+]

@@ -1,0 +1,18 @@
+[ 
+	{
+	    "id" : "000000000000000000000001",
+	    "name" : "ADMINISTRATOR",
+	    "system" : true,
+	    "permissions" : [ 
+        	"*:*"
+    	]
+	},
+	{
+	    "id" : "000000000000000000000002",
+	    "name" : "USER",
+	    "system" : true,
+	    "permissions" : [ 
+        	"*:*"
+    	]
+	}
+]

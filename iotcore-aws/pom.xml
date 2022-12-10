@@ -1,0 +1,107 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+		<groupId>com.iotcore</groupId>
+		<artifactId>iotcore-parent</artifactId>
+		<version>0.0.1</version>
+	</parent>
+  <artifactId>iotcore-aws</artifactId>
+  <name>IoTCore-Aws</name>
+  
+  <properties>
+	
+		<!-- AWS -->
+		<aws-java-sdk.version>2.17.140</aws-java-sdk.version>
+		<aws-lambda-java-core.version>1.2.1</aws-lambda-java-core.version>
+		<aws-lambda-java-events.version>2.2.6</aws-lambda-java-events.version>
+		<aws-java-sdk-v1.version>1.11.960</aws-java-sdk-v1.version>
+		
+	</properties>
+	
+	
+  <dependencies>
+  
+  		<!-- IOTCLOUD -->
+		<dependency>
+			<groupId>com.iotcore</groupId>
+			<artifactId>iotcore</artifactId>
+		</dependency>
+		
+		<!-- J2EE API -->
+		<dependency>
+		    <groupId>javax.annotation</groupId>
+		    <artifactId>javax.annotation-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+		    <artifactId>cdi-api</artifactId>
+		</dependency>
+		
+	  	<!-- AWS SDK v1-->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-lambda-java-core</artifactId>
+			<version>${aws-lambda-java-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-lambda-java-events</artifactId>
+			<version>${aws-lambda-java-events.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>${aws-java-sdk-v1.version}</version>
+		</dependency>
+		
+		<!-- AWS v2 -->
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>lambda</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>iot</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>iotdataplane</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>cognitoidentity</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>cognitoidentityprovider</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>eventbridge</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>sns</artifactId>
+			<scope>provided</scope>
+        </dependency>
+        
+			
+		<!-- LOGGING -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+			</dependency>
+	   
+  </dependencies>
+</project>

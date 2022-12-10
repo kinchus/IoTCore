@@ -1,0 +1,9 @@
+[ 
+	{
+	    "id" : "000000000000000000000001",
+	    "className" : "com.iotcore.domain.model.device.DeviceAlarm",
+	    "name" : "Alarm OK",
+	    "description" : "Signal those meters that have not sent any reads from the last 24h"
+	}
+	
+]

@@ -1,0 +1,33 @@
+[
+	{
+	    "id" : "000000000000000000000001",
+	    "className" : "com.iotcore.domain.model.meter.MeterProfile",
+	    "meterType" : 0,
+	    "isDefault": true,
+    	"manufacturer" : "Honeywell",
+	    "model" : "Elster V200",
+	    "serialNumber" : "0000000000002", 
+	    "meterUnits" :"m3",
+	    "parametersMap" : {
+	        "DISP_TYPE" : 0,
+	        "DIGITS_INT" : 5,
+	        "DIGITS_DEC" : 3,
+	        "READ_UNITS" : "m3"
+	    }
+	},
+	{
+	    "id" : "000000000000000000000002",
+	    "className" : "com.iotcore.domain.model.meter.MeterProfile",
+	    "meterType" : 0,
+    	"manufacturer" : "Honeywell",
+	    "model" : "Elster V210",
+	    "serialNumber" : "0000000000004",
+    	"meterUnits" :"m3", 
+	    "parametersMap" : {
+	        "DISP_TYPE" : 0,
+	        "DIGITS_INT" : 5,
+	        "DIGITS_DEC" : 3,
+	        "READ_UNITS" : "m3"
+	    }
+	} 
+]

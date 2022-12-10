@@ -1,0 +1,17 @@
+[ 
+	{
+	    "id" : "000000000000000000000001",
+	    "className" : "com.iotcore.domain.model.Organization",
+	    "isRoot" : true,
+	    "name" : "Laiwa Communications Ltd. (ROOT ACCOUNT)",
+    	"displayName" : "Laiwa Communications"
+	},
+	{
+	    "id" : "000000000000000000000002",
+	    "className" : "com.iotcore.domain.model.Customer",
+	    "name" : "TEST CUSTOMER",
+	    "displayName" : "TESTCUSTOMER",
+	    "groups" : [ "TestUsers"]
+	}
+	
+]

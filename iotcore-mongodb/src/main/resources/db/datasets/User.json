@@ -1,0 +1,87 @@
+[ 
+	{
+		"id":"000000000000000000000001",
+		"username":"test1", 
+		"email":"test1@gmail.com",
+		"accountId" : "0",
+	    "enabled" : true,
+	    "profile" : {
+            "$ref" : "UserProfile",
+            "id" : "000000000000000000000001"
+	     },
+	     "roles" : [ 
+	        {
+	            "$ref" : "Role",
+	            "id" : "000000000000000000000001"
+	        }
+	    ]
+	}, 
+	{
+		"id":"000000000000000000000002", 
+		"username":"test2", 
+		"email":"test2@gmail.com",
+		"accountId" : "0",
+	    "enabled" : true,
+	    "profile" : {
+            "$ref" : "UserProfile",
+            "id" : "000000000000000000000001"
+	     },
+	     "roles" : [ 
+	        {
+	            "$ref" : "Role",
+	            "id" : "000000000000000000000001"
+	        }
+	    ]
+	}, 
+	{
+		"id":"000000000000000000000003", 
+		"username":"test3", 
+		"email":"test3@gmail.com",
+		"accountId" : "0",
+	    "enabled" : true,
+	    "profile" : {
+            "$ref" : "UserProfile",
+            "id" : "000000000000000000000001"
+	     },
+	     "roles" : [ 
+	        {
+	            "$ref" : "Role",
+	            "id" : "000000000000000000000001"
+	        }
+	    ]
+	}, 
+	{
+		"id":"000000000000000000000004", 
+		"username":"test4", 
+		"email":"test4@gmail.com",
+		"accountId" : "0",
+	    "enabled" : true,
+	    "profile" : {
+            "$ref" : "UserProfile",
+            "id" : "000000000000000000000001"
+	     },
+	     "roles" : [ 
+	        {
+	            "$ref" : "Role",
+	            "id" : "000000000000000000000001"
+	        }
+	    ]
+	}, 
+	{
+		"id":"000000000000000000000005", 
+		"username":"test5", 
+		"email":"test5@gmail.com",
+		"accountId" : "0",
+	    "enabled" : true,
+	    "profile" : {
+            "$ref" : "UserProfile",
+            "id" : "000000000000000000000001"
+	     },
+	     "roles" : [ 
+	        {
+	            "$ref" : "Role",
+	            "id" : "000000000000000000000001"
+	        }
+	    ]
+	}
+]
