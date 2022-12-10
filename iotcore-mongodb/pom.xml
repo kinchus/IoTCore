@@ -13,7 +13,7 @@
 	<name>IoTCore-MongoDB</name>
 
 	<properties>
-		<mongo-java-driver.version>4.4.2</mongo-java-driver.version>
+		<org.mongodb.version>4.4.2</org.mongodb.version>
 		<morphia-core.version>2.2.10</morphia-core.version>
 	</properties>
 
@@ -42,19 +42,38 @@
 			<artifactId>jackson-annotations</artifactId>
   		</dependency>
 	
-		<!-- DATABASE -->
+		<!-- MongoDB -->
 		<dependency>
 			<groupId>org.mongodb</groupId>
-			<artifactId>mongodb-driver-legacy</artifactId>
-		</dependency>
+			<artifactId>bson</artifactId>
+			<version>${org.mongodb.version}</version>
+    	</dependency>
 		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongodb-driver-sync</artifactId>
-		</dependency>
+	       <groupId>org.mongodb</groupId>
+        	<artifactId>mongodb-driver-legacy</artifactId>
+	        <version>${org.mongodb.version}</version>
+	    </dependency>
+	    <dependency>
+	       <groupId>org.mongodb</groupId>
+        	<artifactId>mongodb-driver-sync</artifactId>
+	        <version>${org.mongodb.version}</version>
+	    </dependency>
 		<dependency>
 			<groupId>dev.morphia.morphia</groupId>
 			<artifactId>morphia-core</artifactId>
+			<version>${morphia-core.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.mongodb</groupId>
+					<artifactId>mongodb-driver-legacy</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.mongodb</groupId>
+					<artifactId>mongodb-driver-sync</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
+	
 
 		<!-- LOGGING -->
 		<dependency>

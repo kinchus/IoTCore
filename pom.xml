@@ -40,9 +40,6 @@
 		<!-- AWS -->
 		<aws-java-sdk.version>2.17.140</aws-java-sdk.version>
 		
-		<!-- MongoDB and Morphia -->
-		<org.mongodb.version>4.4.2</org.mongodb.version>
-		
 		<!-- Jackson dependencies -->
 		<jackson.version>2.12.6</jackson.version>
 		
@@ -165,38 +162,7 @@
 	        	<scope>import</scope>
 	        </dependency>
 
-			<!-- MongoDB -->
-			<dependency>
-				<groupId>org.mongodb</groupId>
-				<artifactId>bson</artifactId>
-				<version>${org.mongodb.version}</version>
-	    	</dependency>
-			<dependency>
-		       <groupId>org.mongodb</groupId>
-            	<artifactId>mongodb-driver-legacy</artifactId>
-		        <version>${org.mongodb.version}</version>
-		    </dependency>
-		    <dependency>
-		       <groupId>org.mongodb</groupId>
-            	<artifactId>mongodb-driver-sync</artifactId>
-		        <version>${org.mongodb.version}</version>
-		    </dependency>
-			<dependency>
-				<groupId>dev.morphia.morphia</groupId>
-				<artifactId>morphia-core</artifactId>
-				<version>${morphia-core.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.mongodb</groupId>
-						<artifactId>mongodb-driver-legacy</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.mongodb</groupId>
-						<artifactId>mongodb-driver-sync</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-		
+
 			<!-- LOGGING -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
