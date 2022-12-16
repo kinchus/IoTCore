@@ -4,18 +4,22 @@
 package com.iotcore.mongo.dao;
 
 
-import java.lang.reflect.ParameterizedType;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import com.iotcore.core.dao.EntityDao;
+import com.iotcore.core.dao.FieldValuePair;
+import com.iotcore.core.dao.IdEntity;
+import com.iotcore.core.dao.ResultsPage;
 import com.iotcore.mongo.MongoManager;
 import com.iotcore.mongo.id.ObjectIdUtils;
 import com.mongodb.DBCollection;
 
 import dev.morphia.Datastore;
+import dev.morphia.query.CountOptions;
 import dev.morphia.query.FindOptions;
 import dev.morphia.query.MorphiaCursor;
 import dev.morphia.query.Query;
@@ -30,14 +34,11 @@ import dev.morphia.query.experimental.filters.Filters;
  * @param <K>
 * @author <a href="mailto:garciadjx@gmail.com">J.M. Garcia</a>
  */
-public class GenericDao<T extends DomainEntity<?,K>, K>  implements EntityDao<T, K> {
+public class GenericDao<T extends IdEntity<K>, K extends Serializable>  implements EntityDao<T, K> {
 
 	private static final long serialVersionUID = 6314714981317571793L;
+	private static final int OFFSET_DEFAULT = 0;
 	
-	static final int LIMIT_DEFAULT = 1000;
-	static final int OFFSET_DEFAULT = 0;
-	
-
 	private static Datastore datastore;
 	
 	
@@ -89,14 +90,6 @@ public class GenericDao<T extends DomainEntity<?,K>, K>  implements EntityDao<T,
 	
 	
 	/**
-	 * 
-	 */
-	@SuppressWarnings("unchecked")
-	public GenericDao() {
-		persistentClass = (Class<T>)((ParameterizedType)(getClass().getGenericSuperclass())).getActualTypeArguments()[0];
-	}
-
-	/**
 	 * @param entityClass
 	 */
 	public GenericDao(Class<T> entityClass) {
@@ -118,6 +111,7 @@ public class GenericDao<T extends DomainEntity<?,K>, K>  implements EntityDao<T,
 	public GenericDao(Class<T> entityClass, Datastore datastore) {
 		this.persistentClass = entityClass;
 		setDaoDatastore(datastore);
+		this.getClass();
 	}
 	
 	/**
@@ -142,7 +136,6 @@ public class GenericDao<T extends DomainEntity<?,K>, K>  implements EntityDao<T,
 	
 	/**
 	 * @return
-	 * @see com.northstar.domain.dao.EntityDao#findAll()
 	 */
 	@Override
 	public List<T> findAll(Integer start, Integer count) {
@@ -154,7 +147,6 @@ public class GenericDao<T extends DomainEntity<?,K>, K>  implements EntityDao<T,
 	/**
 	 * @param id
 	 * @return
-	 * @see com.northstar.domain.dao.EntityDao#findById(java.lang.Object)
 	 */
 	@Override
 	public T findById(K id) {
@@ -162,19 +154,6 @@ public class GenericDao<T extends DomainEntity<?,K>, K>  implements EntityDao<T,
 		// return getQuery().field("_id").equal(id).first();
 	}
 	
-	
-	/**
-	 * @param ids
-	 * @return
-	 */
-	public List<T> findByIds(List<K> ids) {
-		MorphiaCursor<T> cur =  getQuery().filter(Filters.eq(ENTITY_ID, ids)).iterator(findOptions());
-		return cur.toList();
-		//return (getQuery().field("_id").in(ids)).find().toList();
-	}
-	
-
-
 	/**
 	 * @param object
 	 * @return
@@ -187,21 +166,37 @@ public class GenericDao<T extends DomainEntity<?,K>, K>  implements EntityDao<T,
 			object.setCreatedAt(Calendar.getInstance().getTime());
 			getDaoDatastore().save(object);
 		}
-		else {
-			object.setUpdatedAt(Calendar.getInstance().getTime());
-			getDaoDatastore().save(object);
-		}
-		
 		
 		return object;
 	}
+
+	
+	/**
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public void delete(K id) {
+		getQuery().filter(Filters.eq(ENTITY_ID, id)).findAndDelete();
+	}
+
+		
+	/**
+	 * @param ids
+	 * @return
+	 */
+	protected List<T> findAllByIds(List<K> ids) {
+		MorphiaCursor<T> cur =  getQuery().filter(Filters.eq(ENTITY_ID, ids)).iterator(findOptions());
+		return cur.toList();
+		//return (getQuery().field("_id").in(ids)).find().toList();
+	}
+	
 	
 	/**
 	 * @param object
 	 * @return
 	 */
-	@Override
-	public List<T> save(List<T> object) {
+	protected List<T> save(List<T> object) {
 		
 		for (T t:object) {
 			if (t.getId() == null) { 
@@ -214,37 +209,23 @@ public class GenericDao<T extends DomainEntity<?,K>, K>  implements EntityDao<T,
 		getDaoDatastore().save(object);
 		return object;
 	}
-	
-	
-	/**
-	 * @param id
-	 * @return
-	 * @see com.northstar.domain.dao.EntityDao#delete(java.lang.Object)
-	 */
-	@Override
-	public void delete(K id) {
-		getQuery().filter(Filters.eq(ENTITY_ID, id)).findAndDelete();
-		//Query<T> qry = getQuery().field("_id").equal(id);
-		//getDaoDatastore().delete(qry);
-	}
+
+
 	
 	/**
 	 * @param object
 	 * @return
 	 * @see com.northstar.domain.dao.EntityDao#delete(java.lang.Object)
 	 */
-	@Override
-	public void delete(T object) {
+	protected void delete(T object) {
 		getDaoDatastore().delete(object);
 	}
 	
+	
 	/**
 	 * @param objects
-	 * @return
-	 * @see com.northstar.domain.dao.EntityDao#delete(java.lang.Object)
 	 */
-	@Override
-	public void delete(List<T> objects) {
+	protected void delete(List<T> objects) {
 		
 		List<K> ids = new ArrayList<K>();
 		for (T ent:objects) {
@@ -258,6 +239,49 @@ public class GenericDao<T extends DomainEntity<?,K>, K>  implements EntityDao<T,
 	}
 		
 		
+	protected T findByField(String field, Object value) {
+		return getQuery().filter(Filters.eq(field, value)).first();
+	}
+	
+	protected T findByFields(FieldValuePair ... fieldValues) {
+		Query<T> qry = getQuery();
+		for (FieldValuePair fv:fieldValues) {
+			if (!fv.isNullValue()) {
+				qry.filter(Filters.eq(fv.getField(), fv.getValue()));
+			}
+			else if (fv.isArrayValue()) {
+				qry.filter(Filters.in(fv.getField(), fv.getValues()));
+			}
+		}
+		return qry.first();
+	}
+	
+	
+	protected ResultsPage<T> findAllByField(String field, Object value, Integer start, Integer count) {
+		FindOptions fOpts = findOptions(start, count);
+		Query<T> qry = getQuery().filter(Filters.eq(field, value));
+		MorphiaCursor<T> cur = qry.iterator(fOpts);
+		CountOptions options = new CountOptions().skip(fOpts.getSkip());
+		return new ResultsPage<T>(cur.toList(), qry.count(options));
+	}
+	
+	protected ResultsPage<T> findAllByFields(Integer start, Integer count, FieldValuePair ... fieldValues ) {
+		FindOptions fOpts = findOptions(start, count);
+		Query<T> qry = getQuery();
+		for (FieldValuePair fv:fieldValues) {
+			if (!fv.isArrayValue()) {
+				qry.filter(Filters.eq(fv.getField(), fv.getValue()));
+			}
+			else {
+				qry.filter(Filters.in(fv.getField(), fv.getValues()));
+			}
+		}
+		MorphiaCursor<T> cur = qry.iterator(fOpts);
+		CountOptions options = new CountOptions().skip(fOpts.getSkip());
+		return new ResultsPage<T>(cur.toList(), qry.count(options));
+	}
+	
+
 
 	/**
 	 * @return
@@ -275,28 +299,34 @@ public class GenericDao<T extends DomainEntity<?,K>, K>  implements EntityDao<T,
 		return ret;
 	}
 	
-	
-	/**
-	 * @return
-	 */
-	protected Query<T> getQueryForDeletedItems() {
-		Query<T> ret = null;
-		if (subclassesFilter == null) {
-			ret = getQuery(persistentClass);
-		}
-		else {
-			ret = getQuery(persistentClass, subclassesFilter);
-		}
-		
-		return ret.filter( Filters.eq(DomainEntity.DELETED_FIELD, true));	
-	}
-	
 		
 	/**
 	 * @param sorting
 	 */
-	protected void setDefaultSorting(Sort ... sorts) {
-		this.sorting = sorts;
+	protected void setDefaultSorting(String ... sortFields) {
+		List<Sort> sorting = new ArrayList<Sort> ();
+		for (String sort:sortFields) {
+			String field = null;
+			Sort s = null;
+			Character c = sort.charAt(0);
+			switch (c) {
+			case '-':
+				field = sort.substring(1);
+				s = Sort.descending(field);
+				break;
+			case '+':
+				field = sort.substring(1);
+			default:
+				if (field == null) {
+					field = sort.substring(0);
+				}
+				s = Sort.ascending(field);
+				break;
+			}
+			sorting.add(s);
+		}
+		
+		this.sorting = sorting.toArray(new Sort[sorting.size()]);
 	}
 	
 	protected  FindOptions findOptions() {
@@ -310,8 +340,12 @@ public class GenericDao<T extends DomainEntity<?,K>, K>  implements EntityDao<T,
 	
 	protected  FindOptions findOptions(Integer start, Integer count) {
 		FindOptions f = new FindOptions()
-				.skip(start != null?start:OFFSET_DEFAULT)
-				.limit(count != null?count:LIMIT_DEFAULT);
+				.skip(start != null?start:OFFSET_DEFAULT);
+		
+		if (count != null) {
+				f.limit(count);
+		}
+		
 		if (sorting != null) {
 			f.sort(sorting);
 		}
@@ -321,8 +355,12 @@ public class GenericDao<T extends DomainEntity<?,K>, K>  implements EntityDao<T,
 	
 	protected FindOptions findOptions(Integer start, Integer count, Sort[] sorting) {
 		FindOptions f = new FindOptions()
-				.skip(start != null?start:OFFSET_DEFAULT)
-				.limit(count != null?count:LIMIT_DEFAULT);
+				.skip(start != null?start:OFFSET_DEFAULT);
+		
+		if (count != null) {
+			f.limit(count);
+		}
+	
 		if (sorting != null) {
 			f.sort(sorting);
 		}
@@ -342,5 +380,7 @@ public class GenericDao<T extends DomainEntity<?,K>, K>  implements EntityDao<T,
 	private void setDaoDatastore(Datastore daoDatastore) {
 		this.daoDatastore = daoDatastore;
 	}
+	
+
 
 }

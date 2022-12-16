@@ -10,6 +10,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
+import com.iotcore.core.dao.DomainEntity;
 import com.iotcore.core.dao.EntityDao;
 import com.iotcore.mongo.DbConstants;
 import com.iotcore.mongo.MongoConfig;
@@ -27,7 +28,7 @@ import dev.morphia.Datastore;
  * @param <E> 
  * @param <D> 
  */
-public abstract class DaoTestBase<E extends DomainEntity<?,?>, D extends EntityDao<E,?>> {
+public abstract class DaoTestBase<E extends DomainEntity<?>, D extends EntityDao<E,?>> {
 	
 	private static String configFile = DbConstants.TEST_CONFIG;
 	private static MongoManager mongoManager;
@@ -73,8 +74,7 @@ public abstract class DaoTestBase<E extends DomainEntity<?,?>, D extends EntityD
 	@BeforeAll
 	public static void setUpClass() throws Exception {
 		
-		Datastore ds = getDatastore();
-		
+	
 	}
 	
 	/**
@@ -107,7 +107,7 @@ public abstract class DaoTestBase<E extends DomainEntity<?,?>, D extends EntityD
 	@BeforeEach
 	public void setUp() throws Exception {
 		if (dao == null) {
-			dao = MongoDaoFactory.getDaoImplementation(daoClass);
+			dao = MongoDaoFactory.getDao(daoClass);
 		}
 	}
 	

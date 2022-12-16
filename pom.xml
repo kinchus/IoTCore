@@ -7,7 +7,7 @@
 	<groupId>com.iotcore</groupId>
 	<artifactId>iotcore-parent</artifactId>
 	<version>0.0.1</version>
-	<name>IoTCore Parent</name>
+	<name>IoTCore-Parent</name>
 	<packaging>pom</packaging>
 	<description>IoTCore - Parent Project</description>
 
@@ -69,12 +69,12 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.iotcore</groupId>
+				<groupId>com.iotcore.mongo</groupId>
 				<artifactId>iotcore-mongodb</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.iotcore</groupId>
+				<groupId>com.iotcore.aws</groupId>
 				<artifactId>iotcore-aws</artifactId>
 				<version>${project.version}</version>
 			</dependency>

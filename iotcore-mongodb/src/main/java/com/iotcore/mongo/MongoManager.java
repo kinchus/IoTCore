@@ -24,7 +24,6 @@ import org.bson.codecs.pojo.PojoCodecProvider.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.iotcore.mongo.dao.DomainEntity;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -305,7 +304,7 @@ public class MongoManager implements Serializable {
 		for (Class<?> clazz:classes) {
 			ClassModel<?> model = ClassModel.builder(clazz)
 					.enableDiscriminator(true)
-					.discriminatorKey(DomainEntity.CLASSNAME_FIELD)
+					.discriminatorKey("className")
 					.discriminator(clazz.getName())
 					.build();
 			builder.register(model);

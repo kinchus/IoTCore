@@ -27,7 +27,7 @@ public class DbConstants {
 	/** ORGANIZATIONS */
 	public static final String ORGANIZATIONS = "Organization";
 	/** CUSTOMERS */
-	public static final String CUSTOMERS = "Holder";
+	public static final String CUSTOMERS = "IHolder";
 	/** USERS */
 	public static final String USERS = "User";
 	/** APP_HANDLERS */

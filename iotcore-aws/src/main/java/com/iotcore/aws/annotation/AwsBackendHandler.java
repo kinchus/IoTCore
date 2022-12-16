@@ -5,7 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.iotcore.IoTCloud;
 import com.iotcore.aws.annotation.AwsTrigger.TriggerType;
 
 /**
@@ -25,12 +24,12 @@ public @interface AwsBackendHandler {
 	/**
 	 * Textual description 
 	 */
-	String description() default "";
+	String description();
 
 	/**
 	 * Role from which this handler will be run
 	 */
-	String role() default IoTCloud.APPLICATION_ROLE;
+	String role();
 	
 	/**
 	 * Action that causes the invocation of this handler

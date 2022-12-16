@@ -24,10 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.iotcore.core.dao.EntityDao;
+import com.iotcore.core.dao.DomainEntity;
 import com.iotcore.core.util.StringUtil;
-import com.iotcore.mongo.dao.DomainEntity;
-import com.iotcore.mongo.dao.factory.MongoDaoFactory;
 
 import dev.morphia.Datastore;
 
@@ -60,16 +58,15 @@ public class ModelData {
 	 * @param clazz
 	 * @throws IOException
 	 */
-	public static <T extends DomainEntity<?,?>> void updateCollection(Datastore ds, String jsonCollection, Class<T> clazz) throws IOException {
+	public static <T extends DomainEntity<?>> void updateCollection(Datastore ds, String jsonCollection, Class<T> clazz) throws IOException {
 		List<T> list = getDataModelFromJSONFile(jsonCollection, clazz);
 		if (list == null) {
 			LOG.error("Unable to load model data");
 		}
 		
-		EntityDao<T,?> dao = MongoDaoFactory.getDaoForEntity(clazz);
 		
 		for (T entity:list) {
-			dao.save(entity);
+			ds.save(entity);
 			if (LOG.isTraceEnabled()) {
 				LOG.trace("\tInserted/updated {} {}", clazz.getSimpleName(), entity.getId());
 			}
@@ -126,7 +123,7 @@ public class ModelData {
 	public static void initialize(Datastore ds, String jsonFilename, Class<?> clazz) throws IOException {
 
 		LOG.info("Populating database with initial data...");
-		updateCollection(ds, jsonFilename, (Class<? extends DomainEntity<?,?>>)clazz);
+		updateCollection(ds, jsonFilename, (Class<? extends DomainEntity<?>>)clazz);
 		
 		/*
 		Platform platf = ds.find(Platform.class).first();
