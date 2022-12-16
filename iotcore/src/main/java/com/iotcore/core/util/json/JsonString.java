@@ -300,11 +300,13 @@ public class JsonString implements Serializable {
 		if (ofClass == null) {
 			return true;
 		}
-		if (!ofClass.isInstance(val)) {
-			return false;
+		if (ofClass.isInstance(val)) {
+			return true;
 		}
-
-		return true;
+		else {
+			Class<?> valueClass = val.getClass();
+			return valueClass.isAssignableFrom(ofClass);
+		}
 	}
 
 	/**
