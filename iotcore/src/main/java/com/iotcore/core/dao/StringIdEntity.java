@@ -11,7 +11,7 @@ import com.iotcore.core.util.StringUtil;
  * @author <a href="mailto:garciadjx@gmail.com">J.M. Garcia</a>
  * @version 1.0
  */
-public class StringIdEntity implements IdEntity<String> {
+public abstract class StringIdEntity implements IdEntity<String> {
 
 	private static final long serialVersionUID = 3098897372214630390L;
 	
@@ -46,14 +46,6 @@ public class StringIdEntity implements IdEntity<String> {
 		this.id = idStr;
 	}
 
-	/**
-	 * @return
-	 * @see com.northstar.domain.model.id.IdEntity#keyClass()
-	 */
-	@Override
-	public Class<String> keyClass() {
-		return String.class;
-	}
 
 }
 

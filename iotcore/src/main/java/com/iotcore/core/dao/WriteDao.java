@@ -11,7 +11,7 @@ import java.util.List;
  * @param <K>
  * 
  */
-public interface WriteDao<T extends IdEntity<K>, K> extends Serializable {
+public interface WriteDao<T extends IdEntity<K>, K extends Serializable> extends Serializable {
 	
 	/** FLD_ID */
 	static final String FLD_ID = "id";

@@ -10,10 +10,7 @@ import com.iotcore.core.dao.IdEntity;
  * @param <T>
  * @param <K>
  */
-public interface DomainService<T extends IdEntity<K>, K extends Serializable>
-		extends
-			DomainReadService<T, K>,
-			DomainWriteService<T, K> {
+public interface DomainService<T extends IdEntity<K>, K extends Serializable> extends Serializable {
 
 
 }

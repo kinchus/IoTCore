@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author jmgarcia
  *
  */
-public interface Dao<T extends Serializable> extends Serializable {
+public interface Dao<T> extends Serializable {
 
 	T save(T entity);
 	

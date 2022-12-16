@@ -6,87 +6,37 @@ package com.iotcore.core.dao.factory;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.iotcore.core.dao.Dao;
 import com.iotcore.core.dao.EntityDao;
-import com.iotcore.core.dao.IdEntity;
 
 
 /**
  * @author jmgarcia
  *
  */
-public abstract class DaoFactory implements Serializable {
+/**
+ * @author jmgarcia
+ *
+ */
+public class DaoFactory implements Serializable {
 	
 	private static final long serialVersionUID = -4904108751565871869L;
 	private static final Logger LOG = LoggerFactory.getLogger(DaoFactory.class);
-
-	private static final Map<Class<?>, DaoFactory> factoryMap = new HashMap<>();
-	protected static DaoFactory _instance;
 	
+	public static final String IMPL_SUFFIX = "Impl";
 	
-		
+	private static Map<Class<?>, DaoFactory> daoFactoryMap = new HashMap<>();
+	private static Set<DaoFactory> registeredFactories = new HashSet<DaoFactory>();
 	
-	/**
-	 * @param factory
-	 * @param daoClasses
-	 */
-	@SuppressWarnings("unchecked")
-	protected static void registerFactory(DaoFactory factory, Class<?> daoClasses[], Class<?> implClasses[]) {
-		Objects.requireNonNull(factory);
-		Objects.requireNonNull(daoClasses);
-		Objects.requireNonNull(implClasses);
-		
-		for (int i=0; i<daoClasses.length; i++) {
-			registerFactory(factory, (Class<? extends Dao<?>>)daoClasses[i], (Class<? extends Dao<?>>)implClasses[i]);
-		}
-	}
-	
-	protected static void registerFactory(DaoFactory factory, Class<? extends Dao<?>> daoClass) {
-		Objects.requireNonNull(factory);
-		Objects.requireNonNull(daoClass);
-		
-		if (LOG.isTraceEnabled()) {
-			LOG.trace("Registering {} DAO: {}", factory.getClass().getSimpleName(), daoClass.getSimpleName());
-		}
-		factoryMap.put(daoClass, factory);
-		Class<? extends Dao<?>> implClass;
-		try {
-			implClass = factory.getDaoImplementationClass(daoClass);
-			factory.addDaoImplementation(daoClass, implClass);
-		} catch (ClassNotFoundException e) {
-			LOG.error("Exception: {}", e.getMessage());
-			e.printStackTrace();
-		}
-		
-	}
-	
-	protected static void registerFactory(DaoFactory factory, Class<? extends Dao<?>> daoClass, Class<? extends Dao<?>> implClass) {
-		Objects.requireNonNull(factory);
-		Objects.requireNonNull(daoClass);
-		Objects.requireNonNull(implClass);
-		
-		if (LOG.isTraceEnabled()) {
-			LOG.trace("Registering {} DAO implementation: {}", factory.getClass().getSimpleName(), implClass.getSimpleName());
-		}
-		factoryMap.put(daoClass, factory);	
-		factory.addDaoImplementation(daoClass, implClass);
-	}
-	
-	
-	/**
-	 * @param daoClazz
-	 * @return
-	 */
-	protected static DaoFactory getDaoFactory(Class<? extends Dao<?>> daoClazz) {
-		return  factoryMap.get(daoClazz);
-	}
 	
 	/**
 	 * @param <E>
@@ -94,101 +44,202 @@ public abstract class DaoFactory implements Serializable {
 	 * @param daoClazz
 	 * @return
 	 */
-	public static <E extends IdEntity<?>, D extends Dao<E>> D getDaoImplementation(Class<D> daoClazz) {
+	@SuppressWarnings("unchecked")
+	public static <D extends EntityDao<?, ?>> D getDao(Class<D> daoClazz) {
 		
 		Objects.requireNonNull(daoClazz);
 		
-		String ifaceName = daoClazz.getSimpleName();
+		D dao = null;
 		
-		DaoFactory factory =  factoryMap.get(daoClazz);
-		if (factory == null) {
-			LOG.error("No DaoFactory found for {}", ifaceName);
-			return null;
-		}	
-		
-		D dao = factory.getDao(daoClazz);
-		if (dao == null) {
-			LOG.error("DAO instance is null!!", daoClazz.getSimpleName());
+		DaoFactory factory =  daoFactoryMap.get(daoClazz);
+		if (factory != null) {
+			dao = (D) factory.getDaoInstance(daoClazz);
+			return dao;
 		}
 		
+		LOG.warn("No DAO Factory registered for DAO {}", daoClazz.getSimpleName());
+		if (registeredFactories.isEmpty()) {
+			LOG.error("No DAO Factories found");
+			return null;
+		}
+		
+		for (DaoFactory fact : registeredFactories) {
+			dao = (D) fact.getDaoInstance(daoClazz);
+			if (dao != null) {
+				return dao;
+			}
+		}
+	
+		LOG.error("No implementation found for {}", daoClazz.getSimpleName());
+		return null;
+	}
+	
+
+	/**
+	 * @param factory
+	 * @param daoClass
+	 * @param implClass
+	 */
+	protected static void registerFactory(DaoFactory factory) {
+		Objects.requireNonNull(factory);
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("Registering DAO factory: {}", factory.getClass().getSimpleName());
+		}
+		registeredFactories.add(factory);
+	}
+	
+	
+	
+	
+	/**
+	 * @param factory
+	 * @param daoClass
+	 * @param implClass
+	 */
+	private static void registerFactory(DaoFactory factory, Class<? extends EntityDao<?, ?>> daoClass) {
+		Objects.requireNonNull(factory);
+		Objects.requireNonNull(daoClass);
+		
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("Registering {} DAO implementation: {}", factory.getClass().getSimpleName());
+		}
+		
+		if (!registeredFactories.contains(factory)) {
+			registeredFactories.add(factory);
+		}
+		
+		daoFactoryMap.put(daoClass, factory);	
+		factory.registerDao(daoClass);
+	}
+	
+
+	
+	public static Set<DaoFactory> getFactories() {
+		return Collections.unmodifiableSet(registeredFactories);
+	}
+	
+
+	private Map<Class<? extends EntityDao<?, ?>>, EntityDao<?, ?>> daoInstances = new HashMap<>();
+	private Map<Class<? extends EntityDao<?, ?>>, Class<? extends EntityDao<?, ?>>> daoImplementationsMap = null;
+	private ClassLoader classLoader;
+
+	
+	/**
+	 * 
+	 */
+	protected  DaoFactory() {	
+		this.daoImplementationsMap = new HashMap<Class<? extends EntityDao<?, ?>>, Class<? extends EntityDao<?, ?>>>();
+	}
+
+	
+	protected EntityDao<?, ?> getDaoInstance(Class<? extends EntityDao<?, ?>> daoClazz) {
+		EntityDao<?, ?> dao =  daoInstances.get(daoClazz);
+		if (dao != null) {
+			return dao;
+		}
+		
+		Class<? extends EntityDao<?, ?>> implClass = daoImplementationsMap.get(daoClazz);
+		if (implClass != null) {
+			dao = createInstance(daoClazz);
+		}
 		
 		return dao;
 	}
 	
-	
-	public static DaoFactory getInstance() {
-		return _instance;
+	/**
+	 * @param daoClass
+	 * @return
+	 */
+	protected void registerDao(Class<? extends EntityDao<?, ?>> daoClass) {
+		registerFactory(this, daoClass);
+		
+		Class<? extends EntityDao<?, ?>> implClass = getDaoImplementationClass(daoClass);
+		if (implClass != null) {
+			daoImplementationsMap.put(daoClass, implClass);
+		}
+		else {
+			LOG.warn("Couldn't find an implementation DAO for {}", daoClass.getSimpleName());
+		}
 	}
 	
+	/**
+	 * @param daoClass
+	 * @param implClass
+	 */
+	protected void registerDao(Class<? extends EntityDao<?, ?>> daoClass, Class<? extends EntityDao<?, ?>> implClass) {
+		registerFactory(this, daoClass);
+		daoImplementationsMap.put(daoClass, implClass);
+	}
 
 
+	
+	protected Class<? extends EntityDao<?,?>>  getDaoImplementationClass(Class<?> daoClass) {
+		String implName = daoClass.getName() + IMPL_SUFFIX;
+		if (LOG.isTraceEnabled()) {
+			LOG.trace("Loading DAO implementation: {}", implName);
+		}
+		return loadDaoClass(implName);
+	}
+	
+	
+	protected <D extends EntityDao<?, ?>> D createInstance(Class<D> daoClazz) {
+		@SuppressWarnings("unchecked")
+		Class<? extends D> implClass = (Class<? extends D>) daoImplementationsMap.get(daoClazz);
+		D dao = null;
+		if (implClass != null) {
+			
+			if (LOG.isTraceEnabled()) {
+				LOG.trace("Instantiating DAO implementation for {}", daoClazz.getSimpleName());
+			}
+			try {
+				Constructor<? extends D> cons = implClass.getConstructor();            
+		    	dao = cons.newInstance();
+		    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException  e) {
+		    	LOG.error("{}", e.getMessage());
+		    	e.printStackTrace();
+		    }
 
-	private String implementationPackage = null;
-	private Map<String, Class<? extends Dao<?>>> daoClassMap = null;
-	private ClassLoader classLoader;
-
-	protected DaoFactory() {	
-		this.daoClassMap = new HashMap<String, Class<? extends Dao<?>>>();
+			return dao;
+		}
+		
+		return null;
 	}
 
 
 	/**
-	 * @param implPackage
+	 * @return the classLoader
 	 */
-	protected DaoFactory(String implPackage) {	
-		this.implementationPackage = implPackage;
-		this.daoClassMap = new HashMap<String, Class<? extends Dao<?>>>();
+	protected ClassLoader getClassLoader() {
+		if (classLoader == null) {
+			classLoader = Thread.currentThread().getContextClassLoader();
+		}
+		return classLoader;
 	}
 
 
-	protected void setClassLoader(ClassLoader  classLoader) {
-		this.classLoader = classLoader ;
+	/**
+	 * @param classLoader the classLoader to set
+	 */
+	protected void setClassLoader(ClassLoader classLoader) {
+		this.classLoader = classLoader;
 	}
 
-	protected void addDaoImplementation(Class<?> ifaceClass, Class<? extends Dao<?>> implClass) {
-		daoClassMap.put(ifaceClass.getSimpleName(), implClass);
-	}
 	
-	public Class<? extends Dao<?>>  getDaoImplementationClass(Class<?> ifaceClass) throws ClassNotFoundException {
-		String daoClassName = implementationPackage + ifaceClass.getSimpleName() + "Impl";
-		@SuppressWarnings("unchecked")
-		Class<? extends EntityDao<?,?>> daoClass = (Class<? extends EntityDao<?, ?>>) Class.forName(daoClassName, true, classLoader);
-		return daoClass;
-	}
 	
 	@SuppressWarnings("unchecked")
-	public <D extends Dao<?>> D getDao(Class<D> clazz) {
-		 
-		String ifaceName = clazz.getSimpleName();
-		String daoClassName = implementationPackage + ifaceName + "Impl";
-		
-		if (LOG.isTraceEnabled()) {
-			LOG.trace("Getting {} implementation: {}", ifaceName,  daoClassName);
-		}
-		
-		Class<D> implClass = (Class<D>) daoClassMap.get(ifaceName);
-		if (implClass == null) {
-			try {
-				implClass = (Class<D>) getDaoImplementationClass(clazz);
-			} catch (ClassNotFoundException e) {
-				LOG.error("Exception: {}", e.getMessage());
-				return null;
-			}
-			daoClassMap.put(ifaceName, implClass);
-		}
-		
-		D dao = null;
-		
+	protected Class<? extends EntityDao<?, ?>> loadDaoClass(String className) {
+		Class<? extends EntityDao<?, ?>> clazz = null;
 		try {
-			Constructor<D> cons = implClass.getConstructor();            
-	    	dao = cons.newInstance();
-	    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException  e) {
-	    	LOG.error("{}", e.getMessage());
-	    	e.printStackTrace();
-	    }
-		
-		return dao;
+			clazz =  (Class<? extends EntityDao<?, ?>>) Class.forName(className, true, getClassLoader());
+		} catch (ClassNotFoundException e) {
+			if (LOG.isTraceEnabled()) {
+				LOG.trace("DAO implementation does not exist: {}", className);
+			}
+		}
+		return clazz;
 	}
+	
 
 
 
