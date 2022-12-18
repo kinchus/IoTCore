@@ -42,7 +42,7 @@ public class AwsEvent<D extends DomainEvent<D>> implements JsonSerializable<AwsE
 	}
 
 	/**
-	 * @return the id
+	 * @return the _id
 	 */
 	public String getId() {
 		return id;
@@ -50,7 +50,7 @@ public class AwsEvent<D extends DomainEvent<D>> implements JsonSerializable<AwsE
 
 
 	/**
-	 * @param id the id to set
+	 * @param _id the _id to set
 	 */
 	public void setId(String id) {
 		this.id = id;

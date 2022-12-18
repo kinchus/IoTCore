@@ -32,7 +32,7 @@ public abstract class DomainEvent<D extends DomainEvent<D>> implements JsonSeria
 
 
 	/**
-	 * @return the id
+	 * @return the _id
 	 */
 	@Override
 	public String getId() {
@@ -41,7 +41,7 @@ public abstract class DomainEvent<D extends DomainEvent<D>> implements JsonSeria
 
 
 	/**
-	 * @param id the id to set
+	 * @param _id the _id to set
 	 */
 	@Override
 	public void setId(String id) {

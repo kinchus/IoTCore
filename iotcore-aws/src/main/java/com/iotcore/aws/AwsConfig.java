@@ -108,9 +108,9 @@ public class AwsConfig extends BaseConfig {
 
 
 	/**
-	 * Gets the account id.
+	 * Gets the account _id.
 	 *
-	 * @return the account id
+	 * @return the account _id
 	 */
 	public String getAccountId() {
 		if (accountId == null) {
@@ -152,9 +152,9 @@ public class AwsConfig extends BaseConfig {
 
 
 	/**
-	 * Gets the account id.
+	 * Gets the account _id.
 	 *
-	 * @return the account id
+	 * @return the account _id
 	 */
 	public String getPlatformName() {
 		if (platformName == null) {

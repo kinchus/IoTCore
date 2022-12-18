@@ -35,7 +35,7 @@ public class Thing extends AwsEntity {
 	/**
 	 * Instantiates a new thing.
 	 *
-	 * @param id         the id
+	 * @param _id         the _id
 	 * @param arn        the arn
 	 * @param name       the name
 	 * @param type       the type
@@ -89,9 +89,9 @@ public class Thing extends AwsEntity {
 	}
 
 	/**
-	 * Gets the certificate id.
+	 * Gets the certificate _id.
 	 *
-	 * @return the certificate id
+	 * @return the certificate _id
 	 */
 	public String getCertificateId() {
 		return certificateId;
@@ -116,9 +116,9 @@ public class Thing extends AwsEntity {
 	}
 
 	/**
-	 * Gets the id.
+	 * Gets the _id.
 	 *
-	 * @return the id
+	 * @return the _id
 	 */
 	public String getId() {
 		return id;
@@ -197,9 +197,9 @@ public class Thing extends AwsEntity {
 	}
 
 	/**
-	 * Sets the certificate id.
+	 * Sets the certificate _id.
 	 *
-	 * @param certificateId the new certificate id
+	 * @param certificateId the new certificate _id
 	 */
 	public void setCertificateId(String certificateId) {
 		this.certificateId = certificateId;
@@ -224,9 +224,9 @@ public class Thing extends AwsEntity {
 	}
 
 	/**
-	 * Sets the id.
+	 * Sets the _id.
 	 *
-	 * @param id the new id
+	 * @param _id the new _id
 	 */
 	public void setId(String id) {
 		this.id = id;

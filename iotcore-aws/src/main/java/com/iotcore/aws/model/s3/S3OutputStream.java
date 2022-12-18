@@ -36,7 +36,7 @@ public class S3OutputStream extends OutputStream {
 	/** Amazon S3 client. TODO: support KMS */
 	private final S3Client s3Client;
 
-	/** The unique id for this upload */
+	/** The unique _id for this upload */
 	private String uploadId;
 
 	/** Collection of the etags for the parts that have been uploaded */
