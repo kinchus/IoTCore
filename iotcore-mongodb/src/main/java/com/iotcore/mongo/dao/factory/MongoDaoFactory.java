@@ -23,19 +23,16 @@ public class MongoDaoFactory extends DaoFactory {
 	
 	private static final long serialVersionUID = 4812816954008326969L;
 	private static final Logger LOG = LoggerFactory.getLogger(MongoDaoFactory.class);
-	public static final String IMPL_PACKAGE = ".mongo.";
+	private static final String IMPL_PACKAGE = ".mongo.";
+	private static final MongoDaoFactory instance = new MongoDaoFactory();
 	
-	
-	private static  MongoDaoFactory instance = null;
-
+	static {
+		DaoFactory.registerFactory(instance);
+	}
 	/**
 	 * @return the instance
 	 */
 	public static MongoDaoFactory getInstance() {
-		if (instance == null) {
-			instance = new MongoDaoFactory();
-			DaoFactory.registerFactory(instance);
-		}
 		return instance;
 	}
 	

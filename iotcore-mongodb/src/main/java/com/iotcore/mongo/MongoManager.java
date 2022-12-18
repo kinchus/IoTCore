@@ -8,8 +8,9 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -24,6 +25,11 @@ import org.bson.codecs.pojo.PojoCodecProvider.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.iotcore.core.annotation.MongoDAO;
+import com.iotcore.core.dao.EntityDao;
+import com.iotcore.core.dao.factory.DaoFactory;
+import com.iotcore.core.util.Reflection;
+import com.iotcore.mongo.dao.factory.MongoDaoFactory;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -33,6 +39,8 @@ import com.mongodb.client.MongoDatabase;
 // import com.github.mongobee.exception.MongobeeException;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
+import dev.morphia.mapping.MapperOptions;
+import dev.morphia.mapping.conventions.MorphiaDefaultsConvention;
 
 
 /**
@@ -53,8 +61,6 @@ public class MongoManager implements Serializable {
 	private static CodecProvider pojoCodecProvider = null;
 	private static MongoConfig	config = null;
 	private static MongoManager instance = null;
-	
-	
 	
 	
 	/**
@@ -116,20 +122,48 @@ public class MongoManager implements Serializable {
 		instance = this;
 	}
 	
+	/**
+	 * 
+	 */
+	public MongoManager(MongoClient client) {
+		mongo = client;
+		instance = this;
+	}
+	
+	
 	
 	/**
 	 * Bean initialization for CDI enabled environment
 	 */
-	@PostConstruct
 	public synchronized void init() {
 		
 		if (config == null) {
-			
-			MongoConfig config = new MongoConfig();
-			setConfig(config);
+			config = new MongoConfig();
+			config.parseConfiguration();
 		}
 		
-		getDatastore();
+		String daoPackages = config.getProperty(MongoConfig.ConfigKey.DAO_PACKAGES);
+		if (daoPackages == null) {
+			Package[] packages = getClass().getClassLoader().getDefinedPackages();
+			StringBuilder strBuilder = new StringBuilder();
+			String sep = "";
+			for (Package p:packages) {
+				strBuilder.append(sep);
+				strBuilder.append(p.getName());
+				sep = ", ";
+			}
+			daoPackages = strBuilder.toString();
+		}
+			
+		String [] pkgs = daoPackages.split(",");
+		@SuppressWarnings("unchecked")
+		Set<Class<? extends EntityDao<?, ?>>> daoClasses = Reflection.getAnnotatedClasses(MongoDAO.class, pkgs).stream()
+				.map(c -> (Class<? extends EntityDao<?, ?>>)c).collect(Collectors.toSet());
+		
+		if (!daoClasses.isEmpty()) {
+			MongoDaoFactory factory = MongoDaoFactory.getInstance();
+			DaoFactory.registerFactory(factory, daoClasses);
+		}
 		
 	}
 
@@ -176,7 +210,7 @@ public class MongoManager implements Serializable {
 	 * @return
 	 */
 	public synchronized MongoDatabase getDatabase() {
-		String dbName = config.getDbName();
+		String dbName = getConfig().getDbName();
 		
 		CodecRegistry pojoCodecRegistry = fromRegistries(
 				MongoClientSettings.getDefaultCodecRegistry(), 
@@ -191,7 +225,7 @@ public class MongoManager implements Serializable {
 		Objects.requireNonNull(collectionName, "collectionName cannot be null");
 		Objects.requireNonNull(collectionClazz, "collectionClazz cannot be null");
 		
-		String dbName = config.getDbName();
+		String dbName = getConfig().getDbName();
 		
 		CodecProvider pojoCodecProvider = null;
 		
@@ -233,6 +267,7 @@ public class MongoManager implements Serializable {
 	public Datastore getDatastore() {
 		synchronized (this) {
 			if (datastore == null) {
+				MapperOptions.builder().addConvention(new MorphiaDefaultsConvention());
 				datastore = Morphia.createDatastore(getClient(), config.getDbName());
 				datastore.ensureIndexes();
 			}
@@ -254,29 +289,6 @@ public class MongoManager implements Serializable {
 		}
 		return datastore;
 	}
-	
-	
-	/**
-	 * @return
-	 */
-//	public Morphia getMorphia() {
-//		synchronized (this) {
-//			if (morphia == null) {
-//				morphia = new Morphia();
-//				if (LOG.isTraceEnabled()) LOG.trace("Mapping entities from {}", DOMAIN_PACKAGE);
-//				morphia.mapPackage(DOMAIN_PACKAGE, true);
-//				String[] packages = config.getDomainPackages();
-//				if (packages != null) {
-//					for (String p:packages) {
-//						if (LOG.isTraceEnabled()) LOG.trace("Mapping entities from {}", p);
-//						morphia.mapPackage(p, true);
-//					}
-//				}
-//			}
-//		}
-//		return morphia;
-//	}
-
 	
 	
 	/**

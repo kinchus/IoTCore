@@ -1,14 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.iotcore</groupId>
 		<artifactId>iotcore-parent</artifactId>
 		<version>0.0.1</version>
 	</parent>
-  	
-  	<groupId>com.iotcore.mongo</groupId>
+
+	<groupId>com.iotcore.mongo</groupId>
 	<artifactId>iotcore-mongodb</artifactId>
 	<name>IoTCore-MongoDB</name>
 
@@ -40,24 +38,24 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-  		</dependency>
-	
+		</dependency>
+
 		<!-- MongoDB -->
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>bson</artifactId>
 			<version>${org.mongodb.version}</version>
-    	</dependency>
+		</dependency>
 		<dependency>
-	       <groupId>org.mongodb</groupId>
-        	<artifactId>mongodb-driver-legacy</artifactId>
-	        <version>${org.mongodb.version}</version>
-	    </dependency>
-	    <dependency>
-	       <groupId>org.mongodb</groupId>
-        	<artifactId>mongodb-driver-sync</artifactId>
-	        <version>${org.mongodb.version}</version>
-	    </dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver-legacy</artifactId>
+			<version>${org.mongodb.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver-sync</artifactId>
+			<version>${org.mongodb.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>dev.morphia.morphia</groupId>
 			<artifactId>morphia-core</artifactId>
@@ -73,7 +71,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-	
+
 
 		<!-- LOGGING -->
 		<dependency>
@@ -84,22 +82,20 @@
 
 		<!-- TEST -->
 		<dependency>
-		    <groupId>org.junit.jupiter</groupId>
-		    <artifactId>junit-jupiter-api</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>de.flapdoodle.embed</groupId>
+			<artifactId>de.flapdoodle.embed.mongo</artifactId>
+			<version>4.3.3</version>
 			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
 
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.2.0</version>
-			</plugin>
-		</plugins>
-	</reporting>
 
 	<build>
 		<resources>
@@ -116,5 +112,20 @@
 			</testResource>
 		</testResources>
 
+		<plugins>
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-jar-plugin</artifactId>
+				<executions>
+			        <execution>
+			            <goals>
+			              <goal>test-jar</goal>
+			            </goals>
+					</execution>
+		        </executions>
+			</plugin>
+		</plugins>
+		
 	</build>
+	
 </project>

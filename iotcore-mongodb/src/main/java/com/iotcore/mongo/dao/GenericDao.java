@@ -145,13 +145,13 @@ public class GenericDao<T extends IdEntity<K>, K extends Serializable>  implemen
 	
 
 	/**
-	 * @param id
+	 * @param _id
 	 * @return
 	 */
 	@Override
 	public T findById(K id) {
 		return getQuery().filter(Filters.eq(ENTITY_ID, id)).first();
-		// return getQuery().field("_id").equal(id).first();
+		// return getQuery().field("_id").equal(_id).first();
 	}
 	
 	/**
@@ -172,7 +172,7 @@ public class GenericDao<T extends IdEntity<K>, K extends Serializable>  implemen
 
 	
 	/**
-	 * @param id
+	 * @param _id
 	 * @return
 	 */
 	@Override
@@ -269,10 +269,10 @@ public class GenericDao<T extends IdEntity<K>, K extends Serializable>  implemen
 		FindOptions fOpts = findOptions(start, count);
 		Query<T> qry = getQuery();
 		for (FieldValuePair fv:fieldValues) {
-			if (!fv.isArrayValue()) {
+			if (!fv.isNullValue()) {
 				qry.filter(Filters.eq(fv.getField(), fv.getValue()));
 			}
-			else {
+			else if (fv.isArrayValue()) {
 				qry.filter(Filters.in(fv.getField(), fv.getValues()));
 			}
 		}

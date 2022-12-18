@@ -24,8 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.iotcore.core.dao.DomainEntity;
 import com.iotcore.core.util.StringUtil;
+import com.iotcore.mongo.dao.DomainEntity;
 
 import dev.morphia.Datastore;
 

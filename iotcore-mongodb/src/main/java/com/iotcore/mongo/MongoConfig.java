@@ -24,7 +24,8 @@ import com.mongodb.client.MongoClients;
  */
 public class MongoConfig extends BaseConfig {
 	
-	private static final String URI_PATTERN = "mongodb://%s%s/%s?authSource=%s";
+	public static final String URI_PATTERN = "mongodb://%s%s/%s?authSource=%s";
+	public static final String URI_PATTERN_0 = "mongodb://%s/%s";
 
 	
 	/**
@@ -36,18 +37,24 @@ public class MongoConfig extends BaseConfig {
 		/** JNDI_PROPERTY */
 		JNDI_PROPERTY("mongo.jndi", String.class),
 		URI_PROPERTY("mongo.uri", String.class),
-		/** DBHOST_PROPERTY */
-		DBHOST_PROPERTY("mongo.host", String.class),
-		/** DBPORT_PROPERTY */
-		DBPORT_PROPERTY("mongo.port", Integer.class),
-		/** DBNAME_PROPERTY */
-		DBNAME_PROPERTY("mongo.dbname", String.class),
+		/** DBHOST */
+		DBHOST("mongo.host", String.class),
+		/** DBPORT */
+		DBPORT("mongo.port", Integer.class),
+		/** DBNAME */
+		DBNAME("mongo.dbname", String.class),
 		/** DBAUTH_PROPERTY */
 		DBAUTH_PROPERTY("mongo.dbauth", String.class),
 		/** DBUSER_PROPERTY */
 		DBUSER_PROPERTY("mongo.username", String.class),
 		/** DBPASS_PROPERTY */
-		DBPASS_PROPERTY("mongo.password", String.class);
+		DBPASS_PROPERTY("mongo.password", String.class),
+		/** DAO_PACKAGES: packages to scan for DAOs */
+		DOMAIN_PACKAGES("mongo.dao.entities", String.class),
+		/** DAO_PACKAGES: packages to scan for DAOs */
+		DAO_PACKAGES("mongo.dao.packages", String.class),
+		/** DAO_CLASSES: DAO classes to load */
+		DAO_CLASSES("mongo.dao.classes", String.class);
 		
 		private String key;
 		private Class<?> type;
@@ -79,7 +86,7 @@ public class MongoConfig extends BaseConfig {
 	
 	
 	private static String 	DBHOST_DEFAULT = "localhost";
-	private static String 	DBPORT_DEFAULT = "27017";
+	private static Integer 	DBPORT_DEFAULT = 27017;
 	private static String 	DBNAME_DEFAULT = "admin";
 	
 	private String jndiRes	= null;
@@ -125,31 +132,23 @@ public class MongoConfig extends BaseConfig {
 		if (dbUri == null) {
 			dbUri =  getProperty(ConfigKey.URI_PROPERTY);
 		}
-		
 		if (username == null) {
-			username = getProperty(ConfigKey.DBUSER_PROPERTY, username);
+			username = getProperty(ConfigKey.DBUSER_PROPERTY);
 		}
 		if (password == null) {
-			password = getProperty(ConfigKey.DBPASS_PROPERTY, password);
+			password = getProperty(ConfigKey.DBPASS_PROPERTY);
 		}
 		if (dbHost== null) {
-			dbHost =  getProperty(ConfigKey.DBHOST_PROPERTY, DBHOST_DEFAULT);
+			dbHost =  getProperty(ConfigKey.DBHOST, DBHOST_DEFAULT);
 		}
 		if (dbAuth == null) {
 			dbAuth =  getProperty(ConfigKey.DBAUTH_PROPERTY, DBNAME_DEFAULT);
 		}
 		if (dbName == null) {
-			dbName =  getProperty(ConfigKey.DBNAME_PROPERTY, DBNAME_DEFAULT);
+			dbName =  getProperty(ConfigKey.DBNAME, DBNAME_DEFAULT);
 		}
-		
-		String dbPortStr = getProperty(ConfigKey.DBPORT_PROPERTY, DBPORT_DEFAULT);
-		if (dbPortStr != null) {
-			try {
-				dbPort = Integer.parseInt(dbPortStr);
-			}
-			catch (NumberFormatException e) {
-				dbPort = 27017;
-			}
+		if (dbPort == null) {
+			dbPort = getProperty(ConfigKey.DBPORT, DBPORT_DEFAULT);
 		}
 		
 		
@@ -163,6 +162,8 @@ public class MongoConfig extends BaseConfig {
 				}
 				userCredsSection.append('@');
 			}
+			else {
+			}
 			
 			
 			StringBuffer hostPortSection = new StringBuffer(dbHost);
@@ -170,14 +171,20 @@ public class MongoConfig extends BaseConfig {
 				hostPortSection.append(":" + dbPort);
 			}
 			
+			
 			StringBuffer auth = new StringBuffer();
 			if (dbAuth != null) {
 				auth.append(dbAuth);
 			}
 			
 			
-			dbUri = String.format(URI_PATTERN, userCredsSection.toString(), hostPortSection.toString(), dbName.toString(), auth.toString());
-			
+			if (userCredsSection.isEmpty()) {
+				dbUri = String.format(URI_PATTERN_0, hostPortSection.toString(), dbName.toString(), auth.toString());
+			}
+			else {
+				dbUri = String.format(URI_PATTERN, userCredsSection.toString(), hostPortSection.toString(), dbName.toString(), auth.toString());
+			}
+			LOG.trace("Connection URI set to {}", dbUri);
 		}
 
 		//options = MongoClientOptions.builder().build();
@@ -189,6 +196,41 @@ public class MongoConfig extends BaseConfig {
 	 * @return the dbUri
 	 */
 	public String getDbUri() {
+		if ((dbUri == null)) {
+			
+			StringBuffer userCredsSection = new StringBuffer();
+			if (getUsername() != null) {
+				userCredsSection.append(getUsername());
+				if (getPassword() != null) {
+					userCredsSection.append(":" + getPassword());
+				}
+				userCredsSection.append('@');
+			}
+			else {
+			}
+			
+			
+			StringBuffer hostPortSection = new StringBuffer(getDbHost());
+			if (getDbPort() != null) {
+				hostPortSection.append(":" + getDbPort());
+			}
+			
+			
+			StringBuffer auth = new StringBuffer();
+			if (getDbAuth() != null) {
+				auth.append(getDbAuth());
+			}
+			
+			
+			if (userCredsSection.isEmpty()) {
+				dbUri = String.format(URI_PATTERN_0, hostPortSection.toString(), dbName.toString(), auth.toString());
+			}
+			else {
+				dbUri = String.format(URI_PATTERN, userCredsSection.toString(), hostPortSection.toString(), dbName.toString(), auth.toString());
+			}
+			LOG.trace("Connection URI set to {}", dbUri);
+		}
+
 		return dbUri;
 	}
 
@@ -203,6 +245,9 @@ public class MongoConfig extends BaseConfig {
 	 * @return the dbName
 	 */
 	public String getDbName() {
+		if (dbName == null) {
+			dbName =  getProperty(ConfigKey.DBNAME, DBNAME_DEFAULT); 
+		}
 		return dbName;
 	}
 
@@ -217,6 +262,9 @@ public class MongoConfig extends BaseConfig {
 	 * @return the dbHost
 	 */
 	public String getDbHost() {
+		if (dbHost == null) {
+			dbHost =  getProperty(ConfigKey.DBHOST, DBHOST_DEFAULT);
+		}
 		return dbHost;
 	}
 
@@ -231,6 +279,9 @@ public class MongoConfig extends BaseConfig {
 	 * @return the dbPort
 	 */
 	public Integer getDbPort() {
+		if (dbPort == null) {
+			dbPort = getProperty(ConfigKey.DBPORT, DBPORT_DEFAULT);
+		}
 		return dbPort;
 	}
 
@@ -245,6 +296,9 @@ public class MongoConfig extends BaseConfig {
 	 * @return the username
 	 */
 	public String getUsername() {
+		if (username == null) {
+			username = getProperty(ConfigKey.DBUSER_PROPERTY);
+		}
 		return username;
 	}
 
@@ -259,6 +313,9 @@ public class MongoConfig extends BaseConfig {
 	 * @return the password
 	 */
 	public String getPassword() {
+		if (password == null) {
+			password = getProperty(ConfigKey.DBPASS_PROPERTY);
+		}
 		return password;
 	}
 	
@@ -268,6 +325,23 @@ public class MongoConfig extends BaseConfig {
 	 */
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	/**
+	 * @return the dbAuth
+	 */
+	public String getDbAuth() {
+		if (dbAuth == null) {
+			dbAuth =  getProperty(ConfigKey.DBAUTH_PROPERTY, DBNAME_DEFAULT);
+		}
+		return dbAuth;
+	}
+
+	/**
+	 * @param dbAuth the dbAuth to set
+	 */
+	public void setDbAuth(String dbAuth) {
+		this.dbAuth = dbAuth;
 	}
 
 	/**
@@ -312,7 +386,7 @@ public class MongoConfig extends BaseConfig {
 		}
 		else {
 			LOG.trace("Building MongoDB client from URI {}", dbUri);
-			ret = MongoClients.create(new ConnectionString(dbUri));
+			ret = MongoClients.create(new ConnectionString(getDbUri()));
 		}
 		
 		return ret;
