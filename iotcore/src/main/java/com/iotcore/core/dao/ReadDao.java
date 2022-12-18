@@ -15,11 +15,11 @@ import java.util.Map;
 public interface ReadDao<T extends IdEntity<K>, K extends Serializable> extends Serializable {
 	
 	/** FLD_ID */
-	static final String FLD_ID = "id";
+	static final String FLD_ID = "_id";
 	
 	
 	/**
-	 * @param id
+	 * @param _id
 	 * @return Object entity or NULL if none found
 	 */
 	T findById(K id);

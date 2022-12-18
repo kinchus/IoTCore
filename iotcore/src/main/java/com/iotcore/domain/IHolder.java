@@ -5,7 +5,7 @@ package com.iotcore.domain;
 
 import java.util.List;
 
-import com.iotcore.IoTCloud;
+import com.iotcore.core.IoTCloud;
 
 /**
  * @author jmgarcia

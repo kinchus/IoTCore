@@ -7,7 +7,7 @@ package com.iotcore.core.dao;
 import com.iotcore.core.util.StringUtil;
 
 /**
- * Base class for entities with a String id
+ * Base class for entities with a String _id
  * @author <a href="mailto:garciadjx@gmail.com">J.M. Garcia</a>
  * @version 1.0
  */
@@ -24,7 +24,7 @@ public abstract class StringIdEntity implements IdEntity<String> {
 	
 	
 	/**
-	 * @return the id
+	 * @return the _id
 	 */
 	@Override
 	public String getId() {
@@ -34,12 +34,12 @@ public abstract class StringIdEntity implements IdEntity<String> {
 			retId = StringUtil.last(id.toString(), SID_LENGTH);
 		}
 		return retId;
-		//return id;
+		//return _id;
 	}
 
 	/**
 	 * Accepts an String as entity ID but takes only the last 11 digits. 
-	 * @param idStr the id to set
+	 * @param idStr the _id to set
 	 */
 	@Override
 	public void setId(String idStr) {

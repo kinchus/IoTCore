@@ -3,7 +3,7 @@
  */
 package com.iotcore.domain;
 
-import com.iotcore.IoTCloud;
+import com.iotcore.core.IoTCloud;
 
 /**
  * @author jmgarcia

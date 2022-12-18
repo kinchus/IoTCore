@@ -28,7 +28,7 @@ public interface EntityDao<T extends IdEntity<K>, K extends Serializable> extend
 	
 
 	/**
-	 * @param id
+	 * @param _id
 	 * @return Object entity or NULL if none found
 	 */
 	T findById(K id);
@@ -42,7 +42,7 @@ public interface EntityDao<T extends IdEntity<K>, K extends Serializable> extend
 	
 
 	/**
-	 * @param id
+	 * @param _id
 	 * @return
 	 */
 	void delete(K id);

@@ -14,7 +14,7 @@ import java.util.List;
 public interface WriteDao<T extends IdEntity<K>, K extends Serializable> extends Serializable {
 	
 	/** FLD_ID */
-	static final String FLD_ID = "id";
+	static final String FLD_ID = "_id";
 	
 
 	/**
@@ -30,7 +30,7 @@ public interface WriteDao<T extends IdEntity<K>, K extends Serializable> extends
 	List<T> save(List<T> entity);
 
 	/**
-	 * @param id
+	 * @param _id
 	 * @return
 	 */
 	void delete(K id);

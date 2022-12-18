@@ -10,12 +10,17 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
+import org.reflections.Reflections;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +31,23 @@ import org.slf4j.LoggerFactory;
 public class Reflection {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Reflection.class);
+	
+	
+	public static Set<Class<?>>  getAnnotatedClasses(Class<? extends Annotation> annotClazz, String ... packages) {
+		
+		List<URL> urlList = new ArrayList<URL>();
+		
+		for (String pkg:packages) {
+			urlList.addAll(ClasspathHelper.forPackage(pkg.trim()));
+		}
+		
+		Reflections reflections = new ConfigurationBuilder()
+				.setUrls(urlList)
+				.build();
+		
+		return reflections.getTypesAnnotatedWith(annotClazz);
+	}
+
 	
 	/**
 	 * Creates an instance of the given class
@@ -304,5 +326,7 @@ public class Reflection {
 		
 		return fieldMap;
 	}
+	
+	
 
 }

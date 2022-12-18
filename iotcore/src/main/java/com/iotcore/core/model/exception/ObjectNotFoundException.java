@@ -20,7 +20,7 @@ public class ObjectNotFoundException extends ServiceException {
 	
 	
 	/**
-	 * Creates an exception specifying the entity id in the message
+	 * Creates an exception specifying the entity _id in the message
 	 * @param entityId
 	 */
 	public ObjectNotFoundException(String entityId) {

@@ -33,7 +33,7 @@ public interface Service<T extends IdEntity<K>, K extends Serializable> extends 
 	T create(T object) throws ServiceException;
 
 	/**
-	 * @param id
+	 * @param _id
 	 * @param object
 	 * @return
 	 * @throws ServiceException

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.iotcore;
+package com.iotcore.core;
 
 import java.text.SimpleDateFormat;
 
@@ -58,6 +58,11 @@ public class IoTCloud {
 		return minDateFormat;
 	}
 	
-
+	
+	
+	public static void initialize() {
+		
+	}
+	
 
 }

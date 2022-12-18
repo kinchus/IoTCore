@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 /**
- * Generic interface for entities that must provide an id.
+ * Generic interface for entities that must provide an _id.
  * Id class must be defined in the implementation classes. 
  * 
  * @param <K> 
@@ -27,14 +27,14 @@ public interface IdEntity<K extends Serializable> extends Serializable {
 	static final Class<?> DEFAULT_KEY_CLASS = String.class;
 	
 	/**
-	 * Get the id of the actual entity
+	 * Get the _id of the actual entity
 	 * @return
 	 */
 	K getId();
 	
 	/**
-	 * Set the id of the actual entity
-	 * @param id key instance 
+	 * Set the _id of the actual entity
+	 * @param _id key instance 
 	 */
 	void setId(K id);
 	

@@ -6,7 +6,7 @@ import java.util.Date;
 public interface Command extends Serializable {
 
 	/**
-	 * @return the id
+	 * @return the _id
 	 */
 	String getId();
 

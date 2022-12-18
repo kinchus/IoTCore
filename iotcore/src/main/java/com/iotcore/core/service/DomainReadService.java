@@ -16,7 +16,7 @@ public interface DomainReadService<T extends IdEntity<K>, K extends Serializable
 
 	
 	/**
-	 * @param id
+	 * @param _id
 	 * @return
 	 * @throws ObjectNotFoundException
 	 */

@@ -100,11 +100,8 @@ public class BaseConfig {
      */
     public void setPropertiesFile(String filename) throws IOException, FileNotFoundException {
     	InputStream stream = null;
-    	String userPath = System.getProperty("user.home");
-    	File file = Paths.get(userPath, filename).toFile();
-		if (!file.exists())  {
-			file = new File(filename);
-		}
+    	String currentPath = System.getProperty("user.dir");
+    	File file = Paths.get(currentPath, filename).toFile();
 		if (file.exists())  {
 			stream = new FileInputStream(file);
 		}
@@ -115,7 +112,6 @@ public class BaseConfig {
     			stream = getClass().getClassLoader().getResourceAsStream(defaults);
     		}
         }
-		
 		
         if (stream != null) {
         	LOG.trace("Reading configuration properties");
@@ -184,11 +180,11 @@ public class BaseConfig {
    		
    		if (strVal == null) {
    			strVal = getProperty(key.getKey());
-   			if (LOG.isTraceEnabled()) {
-   				LOG.trace("Read property {}: {}", key.getKey(), strVal);
-   			}
    		}
    		
+   		if ((strVal != null) && LOG.isTraceEnabled()) {
+			LOG.trace("Read property {}: {}", key.getKey(), strVal);
+		}
    		
    		
    		if (StringUtil.isBlank(strVal)) {

@@ -20,7 +20,7 @@ public class ObjectExistsException extends ServiceException {
 	
 	
 	/**
-	 * Creates an exception specifying the entity id in the message
+	 * Creates an exception specifying the entity _id in the message
 	 * @param entity
 	 */
 	public ObjectExistsException(String entity) {

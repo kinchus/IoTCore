@@ -16,7 +16,7 @@ public interface Event<E extends Event<E>> extends JsonSerializable<E>  {
 	String getId();
 	
 	/**
-	 * @param id
+	 * @param _id
 	 */
 	void setId(String id);
 	

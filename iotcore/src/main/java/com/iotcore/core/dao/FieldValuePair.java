@@ -61,7 +61,7 @@ public class FieldValuePair {
 	}
 	
 	public boolean isNullValue() {
-		return value != null;
+		return value == null;
 	}
 	
 

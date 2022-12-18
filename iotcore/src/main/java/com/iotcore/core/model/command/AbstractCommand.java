@@ -28,7 +28,7 @@ public class AbstractCommand<C extends AbstractCommand<C>> implements Command {
 	}
 
 	/**
-	 * @return the id
+	 * @return the _id
 	 */
 	@Override
 	public String getId() {
